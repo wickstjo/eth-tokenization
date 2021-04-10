@@ -1,0 +1,23 @@
+{
+    "name": "eth-tokenization",
+    "version": "1.0.0",
+    "description": "",
+    "main": "truffle-config.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "truffle test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wickstjo/eth-tokenization.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wickstjo/eth-tokenization/issues"
+    },
+    "homepage": "https://github.com/wickstjo/eth-tokenization#readme",
+    "dependencies": {}
+}
