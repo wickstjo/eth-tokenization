@@ -43,30 +43,33 @@ contract Wallet {
         balance -= amount;
     }
 
-    // ADD ALLOWANCE ACCOUNT
-    function add_account(address account, uint token_amount) public {
+    // INCREASE ACCOUNT ALLOWANCE
+    function increase_allowance(uint token_amount, address account) public {
 
         // IF THE SENDER IS THE WALLET OWNER
         // IF THERE ARE ENOUGH UNRESERVED TOKENS
         require(msg.sender == owner, 'you are not the wallet owner');
         require(balance - reserved >= token_amount, 'not enough unreserved tokens');
 
-        // SET ALLOWANCE
-        allowances[account] = token_amount;
+        // INCREASE ALLOWANCE
+        allowances[account] += token_amount;
 
         // INCREASE RESERVED TOKENS
         reserved += token_amount;
     }
 
-    // INCREASE ACCOUNT ALLOWANCE
-    function increase_allowance() public {
-    }
-
     // REDUCE ACCOUNT ALLOWANCE
-    function reduce_allowance() public {
-    }
+    function reduce_allowance(uint token_amount, address account) public {
 
-    // SPEND ACCOUNT ALLOWANCE
-    function spend_allowance() public {
+        // IF THE SENDER IS THE WALLET OWNER
+        // IF ACCOUNT HAS ENOUGH ALLOWANCE
+        require(msg.sender == owner, 'you are not the wallet owner');
+        require(allowances[account] >= token_amount, 'account does not have enough assigned tokens');
+
+        // REDUCE ALLOWANCE
+        allowances[account] -= token_amount;
+
+        // REDUCE RESERVED TOKENS
+        reserved -= token_amount;
     }
 }
