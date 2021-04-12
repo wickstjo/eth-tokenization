@@ -58,7 +58,7 @@ contract TokenManager {
         require(balance + amount >= balance, 'token overflow');
 
         // INCREASE SENDERS TOKEN BALANCE
-        wallets[msg.sender].increase(amount);
+        wallets[msg.sender].increase_balance(amount);
 
         // INCREASE SOLD COUNT
         sold += amount;
@@ -77,7 +77,7 @@ contract TokenManager {
         require(balance - amount <= balance, 'token underflow');
 
         // REDUCE SENDERS TOKEN BALANCE
-        wallets[user].reduce(amount);
+        wallets[user].reduce_balance(amount);
 
         // MAKE TOKENS AVAILABLE FOR PURCHASE
         sold -= amount;
@@ -100,8 +100,8 @@ contract TokenManager {
         require(balance_to + amount >= balance_to, 'token overflow');
 
         // REDUCE & INCREASE RESPECTIVE BALANCES
-        wallets[from].reduce(amount);
-        wallets[to].increase(amount);
+        wallets[from].reduce_balance(amount);
+        wallets[to].increase_balance(amount);
     }
 
     // CHECK IF TOKEN CONTRACT EXISTS
