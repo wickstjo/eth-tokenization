@@ -64,6 +64,14 @@ contract TokenManager {
         sold += amount;
     }
 
+    // TODO
+    function spend_balance() public {
+    }
+
+    // TODO
+    function spend_allowance() public {
+    }
+
     // CONSUME TOKENS
     function consume(uint amount, address user) public {
 

@@ -33,14 +33,16 @@ contract Wallet {
         balance += amount;
     }
 
-    // REDUCE TOKEN BALANCE
-    function reduce_balance(uint amount) public {
+    // SPEND TOKEN BALANCE
+    function spend_balance(uint token_amount) public {
 
         // IF THE SENDER IS THE TOKEN MANAGER
-        require(msg.sender == token_manager, 'you are not permitted to perform this action');
+        // IF THE UNRESERVED BALANCE IS HIGH ENOUGH
+        require(msg.sender == token_manager, 'permission denied');
+        require(balance - reserved >= token_amount, 'unreserved balance not high enough');
 
-        // INCREASE BALANCE
-        balance -= amount;
+        // REDUCE BALANCE
+        balance -= token_amount;
     }
 
     // INCREASE ACCOUNT ALLOWANCE
@@ -49,7 +51,7 @@ contract Wallet {
         // IF THE SENDER IS THE WALLET OWNER
         // IF THERE ARE ENOUGH UNRESERVED TOKENS
         require(msg.sender == owner, 'you are not the wallet owner');
-        require(balance - reserved >= token_amount, 'not enough unreserved tokens');
+        require(balance - reserved >= token_amount, 'unreserved balance not high enough');
 
         // INCREASE ALLOWANCE
         allowances[account] += token_amount;
@@ -58,18 +60,19 @@ contract Wallet {
         reserved += token_amount;
     }
 
-    // REDUCE ACCOUNT ALLOWANCE
-    function reduce_allowance(uint token_amount, address account) public {
+    // SPEND WALLET ACCOUNT ALLOWANCE
+    function spend_allowance(uint token_amount, address account) public {
 
-        // IF THE SENDER IS THE WALLET OWNER
+        // IF THE SENDER IS THE WALLET OWNER OR TOKEN MANAGER
         // IF ACCOUNT HAS ENOUGH ALLOWANCE
-        require(msg.sender == owner, 'you are not the wallet owner');
-        require(allowances[account] >= token_amount, 'account does not have enough assigned tokens');
+        require(msg.sender == owner || msg.sender == token_manager, 'permission denied');
+        require(allowances[account] >= token_amount, 'account does not have a high enough allowance');
 
         // REDUCE ALLOWANCE
         allowances[account] -= token_amount;
 
-        // REDUCE RESERVED TOKENS
+        // REDUCE BALANCE & RESERVE
+        balance -= token_amount;
         reserved -= token_amount;
     }
 }
